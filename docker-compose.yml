@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  metatrader5:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mt5
+    ports:
+      - "5900:5900"  # VNC port
+    volumes:
+      - mt5_data:/home/trader/.wine  # Persist MT5 installation and data
+    restart: unless-stopped
+
+volumes:
+  mt5_data:  # Named volume to persist data 

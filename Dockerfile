@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y \
     xterm \
     fluxbox \
     locales \
+    dos2unix \
     && rm -rf /var/lib/apt/lists/*
 
 # Set up locale
@@ -64,7 +65,8 @@ USER root
 
 # Create entrypoint script with explicit commands
 COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+# Fix line endings and make executable
+RUN dos2unix /entrypoint.sh && chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["vnc"]

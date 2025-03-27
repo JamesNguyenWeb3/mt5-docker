@@ -27,6 +27,16 @@ start_vnc() {
     tail -f /dev/null
 }
 
+# Setup ZeroMQ for MT5
+setup_zmq() {
+    log "Setting up ZeroMQ for MetaTrader 5..."
+    # Make the setup script executable
+    chmod +x /setup_zmq.sh
+    # Run the setup script
+    /setup_zmq.sh
+    log "ZeroMQ setup completed"
+}
+
 # Main logic
 case "$1" in
     install)
@@ -37,6 +47,9 @@ case "$1" in
         ;;
     vnc)
         start_vnc
+        ;;
+    setup-zmq)
+        setup_zmq
         ;;
     *)
         exec "$@"

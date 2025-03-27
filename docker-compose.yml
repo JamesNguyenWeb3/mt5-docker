@@ -8,8 +8,11 @@ services:
     container_name: mt5
     ports:
       - "5900:5900"  # VNC port
+      - "5555:5555"  # ZeroMQ port
     volumes:
       - mt5_data:/home/trader/.wine  # Persist MT5 installation and data
+      - ./mql5:/mql5                # Mount MQL5 files
+      - ./python:/python            # Mount Python files
     restart: unless-stopped
 
 volumes:

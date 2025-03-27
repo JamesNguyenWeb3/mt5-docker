@@ -14,6 +14,10 @@ RUN apt-get update && apt-get install -y \
     fluxbox \
     locales \
     dos2unix \
+    build-essential \
+    python3 \
+    python3-pip \
+    libzmq3-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Set up locale
@@ -62,6 +66,20 @@ chmod +x /home/trader/start_vnc.sh
 
 # Switch back to root for entrypoint configuration
 USER root
+
+# Create ZeroMQ and Python directories
+RUN mkdir -p /mql5/Include/ZMQ /mql5/Experts /python
+
+# Copy ZeroMQ setup script
+COPY setup_zmq.sh /setup_zmq.sh
+RUN chmod +x /setup_zmq.sh
+
+# Copy Python client
+COPY python/receive_ticks.py /python/
+COPY python/requirements.txt /python/
+
+# Install Python requirements
+RUN pip3 install -r /python/requirements.txt
 
 # Create entrypoint script with explicit commands
 COPY entrypoint.sh /entrypoint.sh
